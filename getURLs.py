@@ -23,7 +23,7 @@ def filter_urls_by_extension(html_content, extension):
 base_url = "https://ssusi.jhuapl.edu/data_retriver?spc=f17&type=edr-aur&year=2014&Doy="
 
 extension = 'nc'     # Desired file extension
-start_doy = 105       # Starting value of Doy
+start_doy = 1       # Starting value of Doy
 end_doy = 365       # Ending value of Doy
 
 # Create the "2014" folder if it doesn't exist
