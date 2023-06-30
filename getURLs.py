@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import urllib
 from urllib.parse import urlparse
 from pathlib import Path
 
@@ -19,14 +20,14 @@ def filter_urls_by_extension(html_content, extension):
 
     return filtered_urls
 
-base_url = "https://ssusi.jhuapl.edu/data_retriver?spc=f17&type=edr-aur&year=2015&Doy="
+base_url = "https://ssusi.jhuapl.edu/data_retriver?spc=f17&type=edr-aur&year=2014&Doy="
 
 extension = 'nc'     # Desired file extension
-start_doy = 1       # Starting value of Doy
+start_doy = 105       # Starting value of Doy
 end_doy = 365       # Ending value of Doy
 
-# Create the "2015" folder if it doesn't exist
-year_folder = Path.cwd() / "2015"
+# Create the "2014" folder if it doesn't exist
+year_folder = Path.cwd() / "2014"
 year_folder.mkdir(exist_ok=True)
 
 for doy in range(start_doy, end_doy + 1):
@@ -46,5 +47,9 @@ for doy in range(start_doy, end_doy + 1):
     print(f"URLs for Doy {padded_doy}:")
     for filtered_url in filtered_urls:
         file_name = Path(filtered_url).name
-        print(file_name)
+
+        with urllib.request.urlopen("https://ssusi.jhuapl.edu/"+filtered_url) as response:
+            year_folder.joinpath(file_name).write_bytes(response.read())
+        print(filtered_url)
+
     print("--------------------")
